@@ -6,3 +6,12 @@ int foo(int a) {
   }
   return ret;
 }
+
+int bar(int a) {
+  int ret = 1;
+  while (a) {
+    ret *= a;
+    a--;
+  }
+  return ret;
+}
