@@ -1,3 +1,4 @@
+#include "llvm/ADT/SmallSet.h"
 #include "llvm/Analysis/LoopAnalysisManager.h"
 #include "llvm/Analysis/LoopInfo.h"
 #include "llvm/Analysis/LoopInfoImpl.h"
@@ -13,6 +14,8 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
 #include "llvm/Transforms/Utils.h"
+
+#include <set>
 
 using namespace llvm;
 #define DEBUG_TYPE "loop-meta"
@@ -73,9 +76,25 @@ bool LoopMetaPass::instrumentBackEdge(Loop *L) {
   Instruction *TermInst = BB->getTerminator();
   auto Message = getMessage(TermInst);
   // Prepare metadata
-  dbgs() << "Add metadata to backedge: : " << Message << "\n";
+  dbgs() << "Add metadata to backedge: " << Message << "\n";
   setMetadata(TermInst, "LoopMetaBackEdge", Message);
   return false;
+
+  // Search all blocks for backedge.
+  /*
+  BasicBlock *Header = L->getHeader();
+  std::set<BasicBlock *> preds(pred_begin(Header), pred_end(Header));
+  for (BasicBlock *BB : L->getBlocks()) {
+    if (preds.count(BB) == 0)
+      continue;
+    // Get terminator block, or back edge.
+    Instruction *TermInst = BB->getTerminator();
+    auto Message = getMessage(TermInst);
+    // Prepare metadata
+    dbgs() << "Add metadata to backedge: " << Message << "\n";
+    setMetadata(TermInst, "LoopMetaBackEdge", Message);
+  }
+  */
 }
 
 bool LoopMetaPass::instrumentInductionVariable(Loop *L, ScalarEvolution &SE) {
