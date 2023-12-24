@@ -1,4 +1,6 @@
 #include "llvm/Analysis/LoopAnalysisManager.h"
+#include "llvm/Analysis/LoopInfo.h"
+#include "llvm/Analysis/LoopInfoImpl.h"
 #include "llvm/Analysis/LoopPass.h"
 #include "llvm/IR/DebugInfo.h"
 #include "llvm/IR/DebugLoc.h"
@@ -23,7 +25,6 @@ public:
   bool runOnLoop(Loop *, LPPassManager &LPM) override;
   bool doFinalization() override;
 };
-
 } // namespace
 
 char LoopMetaPass::ID = 0;

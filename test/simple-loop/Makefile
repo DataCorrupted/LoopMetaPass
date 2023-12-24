@@ -1,3 +1,3 @@
 all:
-	clang++ -g -Xclang -load -Xclang ../../build/src/libLoopMetaPass.so a.cpp -S -emit-llvm -o with-pass.ll
+	clang++ -g -Xclang -load -Xclang ../../build/src/libLoopMetaPass.so simple-loop.cpp -S -emit-llvm -o with-pass.ll
 	clang++ -g a.cpp -S -emit-llvm -o origin.ll 
